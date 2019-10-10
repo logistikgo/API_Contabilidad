@@ -5,7 +5,7 @@ class PendientesEnviar(models.Model):
     Folio = models.CharField(max_length=10, unique=True)
     NombreCortoCliente = models.CharField(max_length=100)
     NombreCortoProveedor = models.CharField(max_length=100)
-    FechaDescarga = models.CharField(max_length=100)
+    FechaDescarga = models.CharField(max_length=100, null=True)
     Moneda = models.CharField(max_length=10)
     #Costo = models.FloatField(default=0)
     CostoSubtotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
