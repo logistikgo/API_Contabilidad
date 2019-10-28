@@ -22,12 +22,16 @@ class PendientesEnviar(models.Model):
     IsFacturaProveedor = models.BooleanField()
     IsEvidenciaFisica = models.BooleanField()
     IsEvidenciaDigital = models.BooleanField()
+    class Meta:
+        db_table="PendientesEnviar"
 
 
 class RelacionConceptoxProyecto(models.Model):
     RelacionIDConceptoxProyecto = models.AutoField(primary_key=True)
-    IDPendienteEnviar = models.ForeignKey(PendientesEnviar, on_delete=models.CASCADE)
+    IDPendienteEnviar = models.ForeignKey(PendientesEnviar, on_delete=models.CASCADE, db_column = 'IDPendienteEnviar')
     IDConcepto = models.IntegerField(default=0)
     IDCliente = models.IntegerField(default=0)
     IDProveedor = models.IntegerField(default=0)
     Proyecto = models.CharField(max_length=30)
+    class Meta:
+        db_table="RelacionConceptoxProyecto"
