@@ -14,17 +14,15 @@ class PendientesEnviarList(APIView):
 
     def post(self, request):
         data = JSONParser().parse(request)
-        if "NombreCortoCliente" not in data and "NombreCortoProveedor" not in data:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = PendientesEnviarSerializer(data=data)
         if serializer.is_valid():
             GetIDPendienteEnviar = serializer.save()
-            GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto= data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"], Proyecto= data["Proyecto"])
+            GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto= data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"])
             GetDataRelacionxProyecto.save()
-            if "NombreCortoCliente" in data:
-                NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"])
+            if data["IsFacturaCliente"]:
+                NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"], PrecioServicios = data["PrecioServicios"])
                 NewExtCliente.save()
-            elif "NombreCortoProveedor" in data:
+            if data["IsFacturaProveedor"]:
                 NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
                 NewExtProveedor.save()
             return Response(status=status.HTTP_201_CREATED)
