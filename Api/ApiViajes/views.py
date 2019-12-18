@@ -25,7 +25,7 @@ class PendientesEnviarList(APIView):
             if data["IsFacturaProveedor"]:
                 NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
                 NewExtProveedor.save()
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(GetIDPendienteEnviar.IDPendienteEnviar, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
