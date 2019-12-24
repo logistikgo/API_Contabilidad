@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import PendientesEnviar, RelacionConceptoxProyecto, Ext_PendienteEnviar_Costo, Ext_PendienteEnviar_Precio
 from .serializers import PendientesEnviarSerializer
+from django.db import transaction
+import json
 
 class PendientesEnviarList(APIView):
 
@@ -13,20 +15,31 @@ class PendientesEnviarList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        data = JSONParser().parse(request)
-        serializer = PendientesEnviarSerializer(data=data)
-        if serializer.is_valid():
-            GetIDPendienteEnviar = serializer.save()
-            GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto= data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"])
-            GetDataRelacionxProyecto.save()
-            if data["IsFacturaCliente"]:
-                NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"], PrecioServicios = data["PrecioServicios"])
-                NewExtCliente.save()
-            if data["IsFacturaProveedor"]:
-                NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
-                NewExtProveedor.save()
-            return Response(GetIDPendienteEnviar.IDPendienteEnviar, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        ArrConceptos = JSONParser().parse(request)
+        transaction.set_autocommit(False)
+        sid = transaction.savepoint()
+        try:
+            for data in ArrConceptos:
+                serializer = PendientesEnviarSerializer(data=data)
+                if serializer.is_valid() and (data["IsFacturaCliente"] or data["IsFacturaProveedor"]):
+                    GetIDPendienteEnviar = serializer.save()
+                    GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto = data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"])
+                    GetDataRelacionxProyecto.save()
+                    if data["IsFacturaCliente"]:
+                        NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"], PrecioServicios = data["PrecioServicios"])
+                        NewExtCliente.save()
+                    if data["IsFacturaProveedor"]:
+                        NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
+                        NewExtProveedor.save()
+                else:
+                    raise Exception("Datos incorrectos")
+        except:
+            transaction.savepoint_rollback(sid)
+            transaction.set_autocommit(True)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        transaction.commit()
+        transaction.set_autocommit(True)
+        return Response(GetIDPendienteEnviar.IDPendienteEnviar, status=status.HTTP_201_CREATED)
 
 
 
