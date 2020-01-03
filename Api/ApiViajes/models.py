@@ -7,12 +7,11 @@ class PendientesEnviar(models.Model):
     NombreCortoProveedor = models.CharField(max_length=100)
     FechaDescarga = models.DateTimeField()
     Moneda = models.CharField(max_length=10)
-    #Costo = models.FloatField(default=0)
-    #Precio = models.FloatField(default=0)
     Status = models.CharField(max_length=15)
     IsEvidenciaFisica = models.BooleanField()
     IsEvidenciaDigital = models.BooleanField()
     Proyecto = models.CharField(max_length=30)
+    TipoConcepto = models.CharField(max_length=30)
     class Meta:
         db_table="PendientesEnviar"
 

@@ -16,6 +16,10 @@ class PendientesEnviarList(APIView):
 
     def post(self, request):
         ArrConceptos = JSONParser().parse(request)
+        if not isinstance(ArrConceptos, list):
+            Aux = list()
+            Aux.append(ArrConceptos)
+            ArrConceptos = Aux
         transaction.set_autocommit(False)
         sid = transaction.savepoint()
         try:
