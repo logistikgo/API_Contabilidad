@@ -72,3 +72,10 @@ class PendientesEnviarUpdate(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, pk):
+        Folio = PendientesEnviar.objects.get(Folio=pk)
+        if Folio:
+            Folio.delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_not_found)
