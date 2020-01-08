@@ -45,6 +45,27 @@ class PendientesEnviarList(APIView):
         transaction.set_autocommit(True)
         return Response(GetIDPendienteEnviar.IDPendienteEnviar, status=status.HTTP_201_CREATED)
 
+    def delete(self, request):
+        ArrFolios = JSONParser().parse(request)
+        if not isinstance(ArrFolios, list):
+            Aux = list()
+            Aux.append(ArrFolios)
+            ArrFolios = Aux
+        transaction.set_autocommit(False)
+        sid = transaction.savepoint()
+        try:
+            for data in ArrFolios:
+                Folio = PendientesEnviar.objects.get(Folio=data["Folio"])
+                if Folio:
+                    Folio.delete()
+        except:
+            transaction.savepoint_rollback(sid)
+            transaction.set_autocommit(True)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        transaction.commit()
+        transaction.set_autocommit(True)
+        return Response(status=status.HTTP_200_OK)
+
 
 
 
