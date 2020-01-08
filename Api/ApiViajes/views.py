@@ -56,8 +56,9 @@ class PendientesEnviarList(APIView):
         try:
             for data in ArrFolios:
                 Folio = PendientesEnviar.objects.get(Folio=data["Folio"])
-                if Folio:
-                    Folio.delete()
+                Folio.delete()
+        except PendientesEnviar.DoesNotExist:
+            pass
         except:
             transaction.savepoint_rollback(sid)
             transaction.set_autocommit(True)
