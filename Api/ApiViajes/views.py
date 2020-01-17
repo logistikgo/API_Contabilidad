@@ -72,14 +72,35 @@ class PendientesEnviarList(APIView):
 
 class PendientesEnviarUpdate(APIView):
     def get(self, request, pk):
-        Folio = PendientesEnviar.objects.get(Folio=pk)
-        serializer = PendientesEnviarSerializer(Folio)
-        return Response(serializer.data)
+        try:
+            Folio = PendientesEnviar.objects.get(Folio=pk)
+            serializer = PendientesEnviarSerializer(Folio).data
+            PendienteEnviar = PendienteEnviarToList(serializer)
+            return Response(PendienteEnviar)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):
-        Folio = PendientesEnviar.objects.get(Folio=pk)
+        try:
+            Folio = PendientesEnviar.objects.get(Folio=pk)
+        except PendientesEnviar.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data)
+        if data["IsCosto"]:
+            Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            Ext_Costo.CostoIVA = data["CostoIVA"]
+            Ext_Costo.CostoRetencion = data["CostoRetencion"]
+            Ext_Costo.CostoSubtotal = data["CostoSubtotal"]
+            Ext_Costo.CostoTotal = data["CostoTotal"]
+            Ext_Costo.save()
+        if data["IsPrecio"]:
+            Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            Ext_Precio.CostoIVA = data["PrecioIVA"]
+            Ext_Precio.CostoRetencion = data["PrecioRetencion"]
+            Ext_Precio.CostoSubtotal = data["PrecioSubtotal"]
+            Ext_Precio.CostoTotal = data["PrecioTotal"]
+            Ext_Precio.save()
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_200_OK)
@@ -89,6 +110,20 @@ class PendientesEnviarUpdate(APIView):
         Folio = PendientesEnviar.objects.get(Folio=pk)
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data, partial=True)
+        if data["IsCosto"]:
+            Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            Ext_Costo.CostoIVA = data["CostoIVA"]
+            Ext_Costo.CostoRetencion = data["CostoRetencion"]
+            Ext_Costo.CostoSubtotal = data["CostoSubtotal"]
+            Ext_Costo.CostoTotal = data["CostoTotal"]
+            Ext_Costo.save()
+        if data["IsPrecio"]:
+            Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            Ext_Precio.PrecioIVA = data["PrecioIVA"]
+            Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
+            Ext_Precio.PrecioSubtotal = data["PrecioSubtotal"]
+            Ext_Precio.PrecioTotal = data["PrecioTotal"]
+            Ext_Precio.save()
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_200_OK)
@@ -100,4 +135,25 @@ class PendientesEnviarUpdate(APIView):
             Folio.delete()
             return Response(status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_404_not_found)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
+def PendienteEnviarToList(PendienteMain):
+    try:
+        Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = PendienteMain["IDPendienteEnviar"])
+        PendienteMain["CostoIVA"] = Ext_Costo.CostoIVA
+        PendienteMain["CostoSubtotal"] = Ext_Costo.CostoSubtotal
+        PendienteMain["CostoRetencion"] = Ext_Costo.CostoRetencion
+        PendienteMain["CostoTotal"] = Ext_Costo.CostoTotal
+    except Ext_PendienteEnviar_Costo.DoesNotExist:
+        pass
+    try:
+        Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = PendienteMain["IDPendienteEnviar"])
+        PendienteMain["PrecioIVA"] = Ext_Precio.PrecioIVA
+        PendienteMain["PrecioSubtotal"] = Ext_Precio.PrecioSubtotal
+        PendienteMain["PrecioRetencion"] = Ext_Precio.PrecioRetencion
+        PendienteMain["PrecioTotal"] = Ext_Precio.PrecioTotal
+    except Ext_PendienteEnviar_Precio.DoesNotExist:
+        pass
+    return PendienteMain

@@ -12,6 +12,7 @@ class PendientesEnviar(models.Model):
     IsEvidenciaDigital = models.BooleanField()
     Proyecto = models.CharField(max_length=30)
     TipoConcepto = models.CharField(max_length=30)
+    IsControlDesk = models.BooleanField(default=False, null=True)
     class Meta:
         db_table="PendientesEnviar"
 

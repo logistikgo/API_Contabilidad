@@ -80,12 +80,12 @@ WSGI_APPLICATION = 'Api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': "sql_server.pyodbc",
-        'NAME': "PruebaDjango",
-        'HOST': "104.210.157.194",
-        'USER': "sa",
-        'PASSWORD': "iLs8iC9S69",
+        'NAME': "LogistikGO_Admon_Copiar_01",
+        'HOST': "logistikgo.database.windows.net",
+        'USER': "QUR3n5qk4F33",
+        'PASSWORD': "Kh216Dr97DPoZxxS57",
         'PORT': "1433",
-         'OPTIONS': {
+        'OPTIONS': {
             'driver': "ODBC Driver 17 for SQL Server",
         },
 
