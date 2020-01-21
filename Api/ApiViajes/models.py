@@ -13,6 +13,7 @@ class PendientesEnviar(models.Model):
     Proyecto = models.CharField(max_length=30)
     TipoConcepto = models.CharField(max_length=30)
     IsControlDesk = models.BooleanField(default=False, null=True)
+    DiasCredito = models.IntegerField(default=30, null=True)
     class Meta:
         db_table="PendientesEnviar"
 
