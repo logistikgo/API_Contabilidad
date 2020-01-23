@@ -110,14 +110,14 @@ class PendientesEnviarUpdate(APIView):
         Folio = PendientesEnviar.objects.get(Folio=pk)
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data, partial=True)
-        if data["IsCosto"]:
+        if "IsCosto" in data and data["IsCosto"]:
             Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
             Ext_Costo.CostoIVA = data["CostoIVA"]
             Ext_Costo.CostoRetencion = data["CostoRetencion"]
             Ext_Costo.CostoSubtotal = data["CostoSubtotal"]
             Ext_Costo.CostoTotal = data["CostoTotal"]
             Ext_Costo.save()
-        if data["IsPrecio"]:
+        if "IsPrecio" in data and data["IsPrecio"]:
             Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
             Ext_Precio.PrecioIVA = data["PrecioIVA"]
             Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
@@ -130,11 +130,11 @@ class PendientesEnviarUpdate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        Folio = PendientesEnviar.objects.get(Folio=pk)
-        if Folio:
+        try:
+            Folio = PendientesEnviar.objects.get(Folio=pk)
             Folio.delete()
             return Response(status=status.HTTP_200_OK)
-        else:
+        except PendientesEnviar.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
