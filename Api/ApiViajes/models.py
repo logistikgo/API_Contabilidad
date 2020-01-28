@@ -12,8 +12,7 @@ class PendientesEnviar(models.Model):
     IsEvidenciaDigital = models.BooleanField()
     Proyecto = models.CharField(max_length=30)
     TipoConcepto = models.CharField(max_length=30)
-    IsControlDesk = models.BooleanField(default=False, null=True)
-    DiasCredito = models.IntegerField(default=30, null=True)
+    IsControlDesk = models.BooleanField(null=True)
     class Meta:
         db_table="PendientesEnviar"
 
@@ -35,7 +34,10 @@ class Ext_PendienteEnviar_Precio(models.Model):
     PrecioIVA = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     PrecioRetencion = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     PrecioTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
-    PrecioServicios = models.DecimalField(default=0, max_digits=30, decimal_places=5)
+    ServiciosIVA = models.DecimalField(default=0, max_digits=30, decimal_places=5)
+    ServiciosRetencion = models.DecimalField(default=0, max_digits=30, decimal_places=5)
+    ServiciosSubtotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
+    ServiciosTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     IsFacturaCliente = models.BooleanField(default=False)
     class Meta:
         db_table="Ext_PendienteEnviar_Precio"

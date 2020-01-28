@@ -30,7 +30,7 @@ class PendientesEnviarList(APIView):
                     GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto = data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"])
                     GetDataRelacionxProyecto.save()
                     if data["IsFacturaCliente"]:
-                        NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"], PrecioServicios = data["PrecioServicios"])
+                        NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"], ServiciosIVA = data["ServiciosIVA"], ServiciosRetencion = data["ServiciosRetencion"], ServiciosSubtotal = data["ServiciosSubtotal"], ServiciosTotal = data["ServiciosTotal"])
                         NewExtCliente.save()
                     if data["IsFacturaProveedor"]:
                         NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
@@ -87,19 +87,19 @@ class PendientesEnviarUpdate(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data)
-        if data["IsCosto"]:
+        if "CostoIVA" in data:
             Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
             Ext_Costo.CostoIVA = data["CostoIVA"]
             Ext_Costo.CostoRetencion = data["CostoRetencion"]
             Ext_Costo.CostoSubtotal = data["CostoSubtotal"]
             Ext_Costo.CostoTotal = data["CostoTotal"]
             Ext_Costo.save()
-        if data["IsPrecio"]:
+        if "PrecioIVA" in data:
             Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
-            Ext_Precio.CostoIVA = data["PrecioIVA"]
-            Ext_Precio.CostoRetencion = data["PrecioRetencion"]
-            Ext_Precio.CostoSubtotal = data["PrecioSubtotal"]
-            Ext_Precio.CostoTotal = data["PrecioTotal"]
+            Ext_Precio.PrecioIVA = data["PrecioIVA"]
+            Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
+            Ext_Precio.PrecioSubtotal = data["PrecioSubtotal"]
+            Ext_Precio.PrecioTotal = data["PrecioTotal"]
             Ext_Precio.save()
         if serializer.is_valid():
             serializer.save()
@@ -110,14 +110,14 @@ class PendientesEnviarUpdate(APIView):
         Folio = PendientesEnviar.objects.get(Folio=pk)
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data, partial=True)
-        if "IsCosto" in data and data["IsCosto"]:
+        if "CostoIVA" in data:
             Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
             Ext_Costo.CostoIVA = data["CostoIVA"]
             Ext_Costo.CostoRetencion = data["CostoRetencion"]
             Ext_Costo.CostoSubtotal = data["CostoSubtotal"]
             Ext_Costo.CostoTotal = data["CostoTotal"]
             Ext_Costo.save()
-        if "IsPrecio" in data and data["IsPrecio"]:
+        if "PrecioIVA" in data:
             Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
             Ext_Precio.PrecioIVA = data["PrecioIVA"]
             Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
