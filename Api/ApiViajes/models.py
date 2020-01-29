@@ -34,10 +34,10 @@ class Ext_PendienteEnviar_Precio(models.Model):
     PrecioIVA = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     PrecioRetencion = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     PrecioTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
-    ServiciosIVA = models.DecimalField(default=0, max_digits=30, decimal_places=5)
-    ServiciosRetencion = models.DecimalField(default=0, max_digits=30, decimal_places=5)
-    ServiciosSubtotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
-    ServiciosTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
+    ServiciosIVA = models.DecimalField(default=0, max_digits=30, decimal_places=5, null=True)
+    ServiciosRetencion = models.DecimalField(default=0, max_digits=30, decimal_places=5, null=True)
+    ServiciosSubtotal = models.DecimalField(default=0, max_digits=30, decimal_places=5, null=True)
+    ServiciosTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5, null=True)
     IsFacturaCliente = models.BooleanField(default=False)
     class Meta:
         db_table="Ext_PendienteEnviar_Precio"
