@@ -30,7 +30,12 @@ class PendientesEnviarList(APIView):
                     GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto = data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"])
                     GetDataRelacionxProyecto.save()
                     if data["IsFacturaCliente"]:
-                        NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"], ServiciosIVA = data["ServiciosIVA"], ServiciosRetencion = data["ServiciosRetencion"], ServiciosSubtotal = data["ServiciosSubtotal"], ServiciosTotal = data["ServiciosTotal"])
+                        NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"])
+                        if "ServiciosTotal" in data:
+                            NewExtCliente.ServiciosIVA = data["ServiciosIVA"]
+                            NewExtCliente.ServiciosRetencion = data["ServiciosRetencion"]
+                            NewExtCliente.ServiciosSubtotal = data["ServiciosSubtotal"]
+                            NewExtCliente.ServiciosTotal = data["ServiciosTotal"]
                         NewExtCliente.save()
                     if data["IsFacturaProveedor"]:
                         NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
