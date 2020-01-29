@@ -100,6 +100,11 @@ class PendientesEnviarUpdate(APIView):
             Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
             Ext_Precio.PrecioSubtotal = data["PrecioSubtotal"]
             Ext_Precio.PrecioTotal = data["PrecioTotal"]
+            if "ServiciosTotal" in data:
+                Ext_Precio.ServiciosIVA = data["ServiciosIVA"]
+                Ext_Precio.ServiciosRetencion = data["ServiciosRetencion"]
+                Ext_Precio.ServiciosSubtotal = data["ServiciosSubtotal"]
+                Ext_Precio.ServiciosTotal = data["ServiciosTotal"]
             Ext_Precio.save()
         if serializer.is_valid():
             serializer.save()
@@ -123,6 +128,11 @@ class PendientesEnviarUpdate(APIView):
             Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
             Ext_Precio.PrecioSubtotal = data["PrecioSubtotal"]
             Ext_Precio.PrecioTotal = data["PrecioTotal"]
+            if "ServiciosTotal" in data:
+                Ext_Precio.ServiciosIVA = data["ServiciosIVA"]
+                Ext_Precio.ServiciosRetencion = data["ServiciosRetencion"]
+                Ext_Precio.ServiciosSubtotal = data["ServiciosSubtotal"]
+                Ext_Precio.ServiciosTotal = data["ServiciosTotal"]
             Ext_Precio.save()
         if serializer.is_valid():
             serializer.save()
