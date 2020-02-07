@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'ApiViajes',
-    'rest_framework'
+    'rest_framework',
+    'ImportarExcel'
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'Api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR + '/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,6 +91,18 @@ DATABASES = {
         },
 
     }
+    # 'default': {
+    #     'ENGINE': "sql_server.pyodbc",
+    #     'NAME': "LogistikGO_Admon",
+    #     'HOST': "logistikgo.database.windows.net",
+    #     'USER': "QUR3n5qk4F33",
+    #     'PASSWORD': "Kh216Dr97DPoZxxS57",
+    #     'PORT': "1433",
+    #     'OPTIONS': {
+    #         'driver': "ODBC Driver 17 for SQL Server",
+    #     },
+
+    # }
 }
 
 

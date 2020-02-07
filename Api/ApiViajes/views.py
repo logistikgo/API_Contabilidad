@@ -25,6 +25,7 @@ class PendientesEnviarList(APIView):
         try:
             for data in ArrConceptos:
                 serializer = PendientesEnviarSerializer(data=data)
+                breakpoint()
                 if serializer.is_valid() and (data["IsFacturaCliente"] or data["IsFacturaProveedor"]):
                     GetIDPendienteEnviar = serializer.save()
                     GetDataRelacionxProyecto = RelacionConceptoxProyecto(IDConcepto = data["IDConcepto"], IDPendienteEnviar_id= GetIDPendienteEnviar.IDPendienteEnviar, IDCliente= data["IDCliente"], IDProveedor= data["IDProveedor"])
