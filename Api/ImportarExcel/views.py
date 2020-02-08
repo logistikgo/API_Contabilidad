@@ -19,40 +19,40 @@ def import_data(request):
 				NombreCortoCliente =ws.cell(row=i, column=2).value
 				NombreCortoProveedor=ws.cell(row=i, column=3).value
 				FechaDescarga=ws.cell(row=i, column=4).value
-				Moneda=ws.cell(row=i, column=5).value
-				CostoSubtotal=ws.cell(row=i, column=6).value
-				CostoIVA=ws.cell(row=i, column=7).value
-				CostoRetencion=ws.cell(row=i, column=8).value
-				CostoTotal=ws.cell(row=i, column=9).value
-				PrecioSubtotal=ws.cell(row=i, column=10).value
-				PrecioIVA=ws.cell(row=i, column=11).value
-				PrecioRetencion=ws.cell(row=i, column=12).value
-				PrecioTotal=ws.cell(row=i, column=13).value
-				PrecioServiciosIVA=ws.cell(row=i, column=14).value
-				PrecioServiciosRetencion=ws.cell(row=i, column=15).value
-				PrecioServiciosSubtotal=ws.cell(row=i, column=16).value
-				PrecioServiciosTotal=ws.cell(row=i, column=17).value
-				IsEvidenciaFisica = ws.cell(row=i, column=18).value 
+				Moneda='MXN'
+				CostoSubtotal=0
+				CostoIVA=0
+				CostoRetencion=0
+				CostoTotal=0
+				PrecioSubtotal=ws.cell(row=i, column=7).value
+				PrecioIVA=ws.cell(row=i, column=8).value
+				PrecioRetencion=ws.cell(row=i, column=9).value
+				PrecioTotal=ws.cell(row=i, column=10).value
+				PrecioServiciosIVA=ws.cell(row=i, column=11).value
+				PrecioServiciosRetencion=ws.cell(row=i, column=12).value
+				PrecioServiciosSubtotal=ws.cell(row=i, column=13).value
+				PrecioServiciosTotal=ws.cell(row=i, column=14).value
+				IsEvidenciaFisica = ws.cell(row=i, column=16).value 
+				IsEvidenciaDigital = ws.cell(row=i, column=15).value 
+				IsControlDesk = ws.cell(row=i, column=17).value 
 				if IsEvidenciaFisica == 1:
 					IsEvidenciaFisica = True
 				else:
 					IsEvidenciaFisica = False
-				IsEvidenciaDigital =ws.cell(row=i, column=19).value
 				if IsEvidenciaDigital == 1:
 					IsEvidenciaDigital = True
 				else:
 					IsEvidenciaDigital = False
-				IsControlDesk=ws.cell(row=i, column=20).value
 				if IsControlDesk == 1:
 					IsControlDesk = True
 				else:
 					IsControlDesk = False
-				Estatus=ws.cell(row=i, column=21).value
-				IDProveedor=ws.cell(row=i, column=20).value
-				IDCliente=ws.cell(row=i, column=21).value
+				Estatus='FINALIZADO'
+				IDProveedor=ws.cell(row=i, column=19).value
+				IDCliente=ws.cell(row=i, column=20).value
 				Proyecto = "BKG"
 				TipoConcepto = "VIAJE"
-
+				print(Folio)
 				PendienteEnviar = PendientesEnviar(
 					Folio=Folio,
 					NombreCortoCliente=NombreCortoCliente,
@@ -67,13 +67,6 @@ def import_data(request):
 					IsControlDesk=IsControlDesk
 					)
 				PendienteEnviar.save()
-				Ext_Costo=Ext_PendienteEnviar_Costo(
-					IDPendienteEnviar=PendienteEnviar,
-					CostoSubtotal=CostoSubtotal,
-					CostoIVA=CostoIVA,
-					CostoRetencion=CostoRetencion,
-					CostoTotal=CostoTotal
-					)
 				Ext_Precio=Ext_PendienteEnviar_Precio(
 					IDPendienteEnviar=PendienteEnviar,
 					PrecioSubtotal=PrecioSubtotal,
@@ -85,9 +78,15 @@ def import_data(request):
 					ServiciosSubtotal=PrecioServiciosSubtotal,
 					ServiciosTotal=PrecioServiciosTotal
 					)
-				Ext_Costo.save()
 				Ext_Precio.save()
-				return render(request, 'importexceltest1.html', {'carriers':carriers}) 
+				RelaConceptoxProyecto=RelacionConceptoxProyecto(
+					IDPendienteEnviar = PendienteEnviar,
+				    IDConcepto = 99999999,
+				    IDCliente = IDCliente,
+				    IDProveedor = IDProveedor
+					)
+				RelaConceptoxProyecto.save()
+			return HttpResponse("OKKKK")
 		else:
 			return HttpResponseBadRequest()
 	else:
