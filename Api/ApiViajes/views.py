@@ -118,7 +118,10 @@ class PendientesEnviarUpdate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, pk):
-        Folio = PendientesEnviar.objects.get(Folio=pk)
+    	try:
+        	Folio = PendientesEnviar.objects.get(Folio=pk)
+        except PendientesEnviar.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data, partial=True)
         if "CostoIVA" in data:
