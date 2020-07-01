@@ -132,8 +132,8 @@ class PendientesEnviarUpdate(APIView):
     #Actualiza el registro del Folio especificado con la informacion que viene en un JSON. Los nombres de los parametros tienen que
     #corresponder a los nombres de cada campo en las tablas
     def patch(self, request, pk):
-    	try:
-        	Folio = PendientesEnviar.objects.get(Folio=pk)
+        try:
+            Folio = PendientesEnviar.objects.get(Folio=pk)
         except PendientesEnviar.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         #Se reemplaza la informacion de la tabla principal
