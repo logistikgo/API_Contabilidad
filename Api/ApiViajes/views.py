@@ -129,7 +129,7 @@ class PendientesEnviarUpdate(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    #Actualiza el registro del Folio especificado con la informacion que viene en un JSON. Los nombres de los parametros tienen que 
+    #Actualiza el registro del Folio especificado con la informacion que viene en un JSON. Los nombres de los parametros tienen que
     #corresponder a los nombres de cada campo en las tablas
     def patch(self, request, pk):
     	try:
@@ -160,6 +160,14 @@ class PendientesEnviarUpdate(APIView):
                 Ext_Precio.ServiciosSubtotal = data["ServiciosSubtotal"]
                 Ext_Precio.ServiciosTotal = data["ServiciosTotal"]
             Ext_Precio.save()
+        if 'IDProveedor' in data:
+            RelConceptoProveedor = RelacionConceptoxProyecto.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            RelConceptoProveedor.IDProveedor = data["IDProveedor"]
+            RelConceptoProveedor.save()
+        if 'IDCliente' in data:
+            RelConceptoCliente = RelacionConceptoxProyecto.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            RelConceptoCliente.IDCliente = data["IDCliente"]
+            RelConceptoCliente.save()
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_200_OK)
