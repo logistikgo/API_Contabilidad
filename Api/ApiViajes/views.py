@@ -38,7 +38,20 @@ class PendientesEnviarList(APIView):
                     GetDataRelacionxProyecto.save()
                     if data["IsFacturaCliente"]:
                     	#Crea el registro de la tabla Ext_PendienteEnviar_Precio para la informacion de cobro
-                        NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar = GetIDPendienteEnviar, PrecioSubtotal = data["PrecioSubtotal"], PrecioIVA = data["PrecioIVA"], PrecioRetencion = data["PrecioRetencion"], PrecioTotal = data["PrecioTotal"])
+                        if "MonedaPrecio" in data:
+                            NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar=GetIDPendienteEnviar,
+                                                                       PrecioSubtotal=data["PrecioSubtotal"],
+                                                                       PrecioIVA=data["PrecioIVA"],
+                                                                       PrecioRetencion=data["PrecioRetencion"],
+                                                                       PrecioTotal=data["PrecioTotal"],
+                                                                       MonedaPrecio=data["MonedaPrecio"])
+                        else:
+                            NewExtCliente = Ext_PendienteEnviar_Precio(IDPendienteEnviar=GetIDPendienteEnviar,
+                                                                       PrecioSubtotal=data["PrecioSubtotal"],
+                                                                       PrecioIVA=data["PrecioIVA"],
+                                                                       PrecioRetencion=data["PrecioRetencion"],
+                                                                       PrecioTotal=data["PrecioTotal"],
+                                                                       MonedaPrecio=None)
                         if "ServiciosTotal" in data:
                             NewExtCliente.ServiciosIVA = data["ServiciosIVA"]
                             NewExtCliente.ServiciosRetencion = data["ServiciosRetencion"]
@@ -47,11 +60,24 @@ class PendientesEnviarList(APIView):
                         NewExtCliente.save()
                     if data["IsFacturaProveedor"]:
                     	#Crea el registro de la tabla Ext_PendienteEnviar_Costo para la informacion de Pago
-                        NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar = GetIDPendienteEnviar, CostoSubtotal = data["CostoSubtotal"], CostoIVA = data["CostoIVA"], CostoRetencion = data["CostoRetencion"], CostoTotal = data["CostoTotal"])
+                        if "MonedaCosto" in data:
+                            NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar=GetIDPendienteEnviar,
+                                                                        CostoSubtotal=data["CostoSubtotal"],
+                                                                        CostoIVA=data["CostoIVA"],
+                                                                        CostoRetencion=data["CostoRetencion"],
+                                                                        CostoTotal=data["CostoTotal"],
+                                                                        MonedaCosto=data["MonedaCosto"])
+                        else:
+                            NewExtProveedor = Ext_PendienteEnviar_Costo(IDPendienteEnviar=GetIDPendienteEnviar,
+                                                                        CostoSubtotal=data["CostoSubtotal"],
+                                                                        CostoIVA=data["CostoIVA"],
+                                                                        CostoRetencion=data["CostoRetencion"],
+                                                                        CostoTotal=data["CostoTotal"],
+                                                                        MonedaCosto=None)
                         NewExtProveedor.save()
                 else:
                     raise Exception("Datos incorrectos")
-        except:
+        except Exception as e:
         	#Si hay algun error, se realiza un rollback para deshacer los cambios y se lanza un error 400
             transaction.savepoint_rollback(sid)
             transaction.set_autocommit(True)

@@ -24,6 +24,7 @@ class Ext_PendienteEnviar_Costo(models.Model):
     CostoRetencion = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     CostoTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5)
     IsFacturaProveedor = models.BooleanField(default=False)
+    MonedaCosto = models.CharField(max_length=10, null=True)
     class Meta:
         db_table="Ext_PendienteEnviar_Costo"
 
@@ -39,6 +40,7 @@ class Ext_PendienteEnviar_Precio(models.Model):
     ServiciosSubtotal = models.DecimalField(default=0, max_digits=30, decimal_places=5, null=True)
     ServiciosTotal = models.DecimalField(default=0, max_digits=30, decimal_places=5, null=True)
     IsFacturaCliente = models.BooleanField(default=False)
+    MonedaPrecio = models.CharField(max_length=10, null=True)
     class Meta:
         db_table="Ext_PendienteEnviar_Precio"
 
