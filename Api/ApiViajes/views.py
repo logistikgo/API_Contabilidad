@@ -178,24 +178,24 @@ class PendientesEnviarUpdate(APIView):
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data, partial=True)
         #Se reemplaza la informacion de la tabla de costos, utilizada para el pago
-        if "MonedaCosto" in data:
-            Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar=Folio.IDPendienteEnviar)
-            Ext_Costo.MonedaCosto = data["MonedaCosto"]
-            Ext_Costo.save()
-        if "MonedaPrecio" in data:
-            Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar=Folio.IDPendienteEnviar)
-            Ext_Precio.MonedaPrecio = data["MonedaPrecio"]
-            Ext_Precio.save()
         if "CostoIVA" in data:
-            Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(
+                IDPendienteEnviar=Folio.IDPendienteEnviar) if Ext_PendienteEnviar_Costo.objects.filter(
+                IDPendienteEnviar=Folio.IDPendienteEnviar).exists() else Ext_PendienteEnviar_Costo()
             Ext_Costo.CostoIVA = data["CostoIVA"]
             Ext_Costo.CostoRetencion = data["CostoRetencion"]
             Ext_Costo.CostoSubtotal = data["CostoSubtotal"]
             Ext_Costo.CostoTotal = data["CostoTotal"]
+            if "MonedaCosto" in data:
+                Ext_Costo.MonedaCosto = data["MonedaCosto"]
+            if not Ext_PendienteEnviar_Costo.objects.filter(IDPendienteEnviar=Folio.IDPendienteEnviar).exists():
+                Ext_Costo.IDPendienteEnviar = PendientesEnviar.objects.get(IDPendienteEnviar=Folio.IDPendienteEnviar)
             Ext_Costo.save()
         #Se reemplaza la informacion de la tabla de precios, utilizada para el cobro
         if "PrecioIVA" in data:
-            Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
+            Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(
+                IDPendienteEnviar=Folio.IDPendienteEnviar) if Ext_PendienteEnviar_Precio.objects.filter(
+                IDPendienteEnviar=Folio.IDPendienteEnviar).exists() else Ext_PendienteEnviar_Precio()
             Ext_Precio.PrecioIVA = data["PrecioIVA"]
             Ext_Precio.PrecioRetencion = data["PrecioRetencion"]
             Ext_Precio.PrecioSubtotal = data["PrecioSubtotal"]
@@ -205,6 +205,10 @@ class PendientesEnviarUpdate(APIView):
                 Ext_Precio.ServiciosRetencion = data["ServiciosRetencion"]
                 Ext_Precio.ServiciosSubtotal = data["ServiciosSubtotal"]
                 Ext_Precio.ServiciosTotal = data["ServiciosTotal"]
+            if "MonedaPrecio" in data:
+                Ext_Precio.MonedaPrecio = data["MonedaPrecio"]
+            if not Ext_PendienteEnviar_Precio.objects.filter(IDPendienteEnviar = Folio.IDPendienteEnviar).exists():
+                Ext_Precio.IDPendienteEnviar = PendientesEnviar.objects.get(IDPendienteEnviar=Folio.IDPendienteEnviar)
             Ext_Precio.save()
         if 'IDProveedor' in data:
             RelConceptoProveedor = RelacionConceptoxProyecto.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
@@ -227,7 +231,6 @@ class PendientesEnviarUpdate(APIView):
             return Response(status=status.HTTP_200_OK)
         except PendientesEnviar.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
 
 
 #Esta funcion sirve para traer la informacion de las tablas de Costos y precios para poder regresarla en la consulta de los registros,
