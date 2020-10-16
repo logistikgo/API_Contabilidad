@@ -6,13 +6,13 @@ class PendientesEnviar(models.Model):
     NombreCortoCliente = models.CharField(max_length=100)
     NombreCortoProveedor = models.CharField(max_length=100)
     FechaDescarga = models.DateTimeField()
-    Moneda = models.CharField(max_length=10)
+    Moneda = models.CharField(max_length=10, null=True, default=None)
     Status = models.CharField(max_length=15)
     IsEvidenciaFisica = models.BooleanField()
     IsEvidenciaDigital = models.BooleanField()
     Proyecto = models.CharField(max_length=30)
     TipoConcepto = models.CharField(max_length=30)
-    IsControlDesk = models.BooleanField(null=True)
+    IsControlDesk = models.BooleanField(null=True, default=None)
     class Meta:
         db_table="PendientesEnviar"
 

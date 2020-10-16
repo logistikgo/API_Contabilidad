@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aac62c4-0092-457e-a8d3-81268ba9e0af" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ApiViajes/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiViajes/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ApiViajes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImportarExcel/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImportarExcel/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +22,13 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/logistikgo/API_Contabilidad" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1RsS9gI34HrTGrRVT7kxLNbBh3S" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -66,9 +74,14 @@
       <screen x="-1366" y="0" width="1366" height="728" />
     </state>
     <state x="-1056" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@-1366.0.1366.728" timestamp="1599069868921" />
-    <state x="-903" y="119" key="FileChooserDialogImpl" timestamp="1599152068980">
-      <screen x="-1366" y="0" width="1366" height="728" />
+    <state x="2571" y="170" key="FileChooserDialogImpl" timestamp="1601494712485">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="-903" y="119" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@-1366.0.1366.728" timestamp="1599152068980" />
+    <state x="2571" y="170" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@1920.0.1920.1040" timestamp="1601494712485" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1602688896303">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602688896303" />
   </component>
 </project>

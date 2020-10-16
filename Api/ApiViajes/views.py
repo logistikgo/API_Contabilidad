@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import PendientesEnviar, RelacionConceptoxProyecto, Ext_PendienteEnviar_Costo, Ext_PendienteEnviar_Precio
 from .serializers import PendientesEnviarSerializer
 from django.db import transaction
+#from ImportarExcel.models import Transportistas
 import json
 
 class PendientesEnviarList(APIView):
@@ -18,7 +19,7 @@ class PendientesEnviarList(APIView):
     #Crea el registro en la base de datos, en las tablas RelacionConceptoxProyecto, Ext_PendientEnviar_Costo (Proveedor), Ext_PrendienteEnviar_Precio (Cliente)
     # y el registro principal de PendientesEnviar
     def post(self, request):
-        ArrConceptos = JSONParser().parse(request)
+        ArrConceptos = request if self == "patch" else JSONParser().parse(request)
         #Verifica si se creara solamente 1 registro o se le paso un arreglo de viajes.
         if not isinstance(ArrConceptos, list):
             Aux = list()
@@ -78,6 +79,7 @@ class PendientesEnviarList(APIView):
                 else:
                     raise Exception("Datos incorrectos")
         except Exception as e:
+            print(e)
         	#Si hay algun error, se realiza un rollback para deshacer los cambios y se lanza un error 400
             transaction.savepoint_rollback(sid)
             transaction.set_autocommit(True)
@@ -161,11 +163,29 @@ class PendientesEnviarUpdate(APIView):
         try:
             Folio = PendientesEnviar.objects.get(Folio=pk)
         except PendientesEnviar.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            data = JSONParser().parse(request)
+            json.dumps(data)
+            data["Folio"] = pk
+            data["IsEvidenciaFisica"] = False
+            data["IsEvidenciaDigital"] = False
+            data["IsFacturaCliente"] = True
+            data["IsFacturaProveedor"] = False if data["TipoConcepto"] == "PEDIDO" else True
+            data["MonedaCosto"] = "MXN" if data["MonedaCosto"] == 'PESO' and data["Proyecto"] == 'BKG' else "USD" if data["MonedaCosto"] == 'DOLAR' and data["Proyecto"] == 'BKG' else data["MonedaCosto"]
+            data["MonedaPrecio"] = "MXN" if data["MonedaPrecio"] == 'PESO' and data["Proyecto"] == 'BKG' else "USD" if data["MonedaPrecio"] == 'DOLAR' and data["Proyecto"] == 'BKG' else data["MonedaPrecio"]
+            StatusReturn = PendientesEnviarList.post("patch",data)
+            return Response(status=StatusReturn.status_code)
         #Se reemplaza la informacion de la tabla principal
         data = JSONParser().parse(request)
         serializer = PendientesEnviarSerializer(Folio, data=data, partial=True)
         #Se reemplaza la informacion de la tabla de costos, utilizada para el pago
+        if "MonedaCosto" in data:
+            Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar=Folio.IDPendienteEnviar)
+            Ext_Costo.MonedaCosto = data["MonedaCosto"]
+            Ext_Costo.save()
+        if "MonedaPrecio" in data:
+            Ext_Precio = Ext_PendienteEnviar_Precio.objects.get(IDPendienteEnviar=Folio.IDPendienteEnviar)
+            Ext_Precio.MonedaPrecio = data["MonedaPrecio"]
+            Ext_Precio.save()
         if "CostoIVA" in data:
             Ext_Costo = Ext_PendienteEnviar_Costo.objects.get(IDPendienteEnviar = Folio.IDPendienteEnviar)
             Ext_Costo.CostoIVA = data["CostoIVA"]
@@ -230,3 +250,11 @@ def PendienteEnviarToList(PendienteMain):
     except Ext_PendienteEnviar_Precio.DoesNotExist:
         pass
     return PendienteMain
+
+
+# class ChangeStatusProveedor(APIView):
+#     def post(salfe, request):
+#         data = JSONParser().parse(request)
+#         Status = Transportistas.objects.get(IDTransportista=data['IDTransportista'])
+#         print(Status.StatusProceso)
+#         return Response(Status.StatusProceso,status=200)
