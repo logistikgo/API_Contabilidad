@@ -1,3 +1,5 @@
+import calendar
+import datetime
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -5,7 +7,7 @@ from rest_framework.response import Response
 from .models import PendientesEnviar, RelacionConceptoxProyecto, Ext_PendienteEnviar_Costo, Ext_PendienteEnviar_Precio
 from .serializers import PendientesEnviarSerializer
 from django.db import transaction
-#from ImportarExcel.models import Transportistas
+from ImportarExcel.models import Transportistas, CartaNoAdeudoTransportistas, LogStatusTransportista
 import json
 
 class PendientesEnviarList(APIView):
@@ -255,9 +257,75 @@ def PendienteEnviarToList(PendienteMain):
     return PendienteMain
 
 
-# class ChangeStatusProveedor(APIView):
-#     def post(salfe, request):
-#         data = JSONParser().parse(request)
-#         Status = Transportistas.objects.get(IDTransportista=data['IDTransportista'])
-#         print(Status.StatusProceso)
-#         return Response(Status.StatusProceso,status=200)
+class ChangeStatusProveedor(APIView):
+    def post(salfe, request):
+        data = JSONParser().parse(request)
+        DataTransportistas = Transportistas.objects.get(IDTransportista=data['IDTransportista'])
+        CurrentMonth = datetime.datetime.now().month
+        LastDayOfMonth = calendar.monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
+
+        ItHasCarta = CartaNoAdeudoTransportistas.objects.filter(IDTransportista=DataTransportistas.IDTransportista,
+                                                                MesCartaNoAdeudo=(
+                                                                    salfe.MesCartaConAdeudo(CurrentMonth, 2)),
+                                                                Status="APROBADA",
+                                                                Tipo="MesaControl").exists() if datetime.datetime.day in range(
+            1, 20) else CartaNoAdeudoTransportistas.objects.filter(IDTransportista=DataTransportistas.IDTransportista,
+                                                                   MesCartaNoAdeudo=(
+                                                                       salfe.MesCartaConAdeudo(CurrentMonth, 1)),
+                                                                   Status="APROBADA", Tipo="MesaControl").exists()
+        if not ItHasCarta:
+            GetLetter2MonthsAgo = salfe.Letter2MonthsAgo(DataTransportistas.IDTransportista,3) if datetime.datetime.now().day in range(1, 5) else salfe.Letter2MonthsAgo(
+                DataTransportistas.IDTransportista, 2) if datetime.datetime.now().day in range(21, LastDayOfMonth) else False
+
+            SaveData = salfe.MethodSave(DataTransportistas.IDTransportista, DataTransportistas.StatusProceso,
+                                        "VALIDADO" if GetLetter2MonthsAgo else "ADEUDO")
+            return Response(status=SaveData)
+        else:
+            SaveData = salfe.MethodSave(DataTransportistas.IDTransportista, DataTransportistas.StatusProceso,"VALIDADO")
+            return Response(status=SaveData)
+
+        # elif 21 <= datetime.datetime.now().day <= LastDayOfMonth:
+        #     ItHasCarta = CartaNoAdeudoTransportistas.objects.filter(IDTransportista=DataTransportistas.IDTransportista,
+        #                                                             MesCartaNoAdeudo=(salfe.MesCartaConAdeudo(CurrentMonth, 1)), Status="APROBADA", Tipo="MesaControl").exists()
+        #     if not ItHasCarta:
+        #         GetLetter2MonthsAgo = salfe.Letter2MonthsAgo(DataTransportistas.IDTransportista, 2)
+        #         SaveData = salfe.MethodSave(DataTransportistas.IDTransportista, DataTransportistas.StatusProceso,
+        #                                     "VALIDADO" if GetLetter2MonthsAgo else "ADEUDO")
+        #         return Response(status=SaveData)
+        #     else:
+        #         SaveData = salfe.MethodSave(DataTransportistas.IDTransportista, DataTransportistas.StatusProceso, "VALIDADO")
+        #         return Response(status=SaveData)
+
+
+    def MesCartaConAdeudo(salf,Fecha,restar):
+        months = (
+            "Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+            "Noviembre", "Diciembre")
+        Mes1 = months[Fecha - restar]
+        return Mes1
+
+    def MethodSave(salfe,idtransportista,statusAnterior,NuevoStatus):
+        if statusAnterior == NuevoStatus:
+            return 200
+        else:
+            try:
+                with transaction.atomic(using="default"):
+                    ChangeStatus = Transportistas.objects.get(IDTransportista=idtransportista)
+                    ChangeStatus.StatusProceso = NuevoStatus
+                    ChangeStatus.save()
+                    SaveInLog = LogStatusTransportista()
+                    SaveInLog.IDTransportista = Transportistas.objects.get(IDTransportista=ChangeStatus.IDTransportista)
+                    SaveInLog.IDUsuarioAlta = ChangeStatus.IDTransportista
+                    SaveInLog.StatusAnterior = statusAnterior
+                    SaveInLog.StatusActual = ChangeStatus.StatusProceso
+                    SaveInLog.FechaCambio = datetime.datetime.now()
+                    SaveInLog.save()
+                    return 200
+            except Exception as e:
+                transaction.rollback(using="default")
+                return 500
+
+    def Letter2MonthsAgo(salfe, transportista, RestarMes):
+        Data = CartaNoAdeudoTransportistas.objects.filter(IDTransportista=transportista,
+                                                       MesCartaNoAdeudo=(salfe.MesCartaConAdeudo(datetime.datetime.now().month, RestarMes)), Status="APROBADA", Tipo="MesaControl").exists()
+        return Data

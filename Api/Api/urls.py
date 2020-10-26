@@ -20,5 +20,6 @@ from ApiViajes import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('ApiViajes.urls')),
-    url(r'^import_data/', include('ImportarExcel.urls'))
+    url(r'^import_data/', include('ImportarExcel.urls')),
+    url(r'^Status', include('ApiViajes.urls')),
 ]

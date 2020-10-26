@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3aac62c4-0092-457e-a8d3-81268ba9e0af" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiViajes/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ApiViajes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImportarExcel/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImportarExcel/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +59,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602860962412</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="metodo patch actualizacion">
+      <created>1602866554044</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1602866554044</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -73,23 +83,24 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="metodo patch &#10; al actualizar y si no esta el viaje lo crea en pendientes enviar" />
-    <option name="LAST_COMMIT_MESSAGE" value="metodo patch &#10; al actualizar y si no esta el viaje lo crea en pendientes enviar" />
+    <MESSAGE value="metodo patch actualizacion" />
+    <option name="LAST_COMMIT_MESSAGE" value="metodo patch actualizacion" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2356" y="0" key="CommitChangelistDialog2" timestamp="1602860961341">
+    <state x="2356" y="0" key="CommitChangelistDialog2" timestamp="1602866553176">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="-1056" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@-1366.0.1366.728" timestamp="1599069868921" />
-    <state x="2356" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602860961341" />
+    <state x="2356" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602866553176" />
     <state x="2571" y="170" key="FileChooserDialogImpl" timestamp="1601494712485">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="-903" y="119" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@-1366.0.1366.728" timestamp="1599152068980" />
     <state x="2571" y="170" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@1920.0.1920.1040" timestamp="1601494712485" />
-    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1602860968420">
+    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1602866558264">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602860968420" />
+    <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602866558264" />
     <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1602688896303">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
