@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3aac62c4-0092-457e-a8d3-81268ba9e0af" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiViajes/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiViajes/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ApiViajes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ApiViajes/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ImportarExcel/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImportarExcel/models.py" afterDir="false" />
     </list>
@@ -38,7 +37,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../repositorioLGK/FinanzasCXP/CuentasxPagar" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -66,7 +65,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602866554044</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="metodo para actualizar estatus de los transportistas">
+      <created>1603728855114</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1603728855114</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -84,23 +90,26 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="metodo patch &#10; al actualizar y si no esta el viaje lo crea en pendientes enviar" />
     <MESSAGE value="metodo patch actualizacion" />
-    <option name="LAST_COMMIT_MESSAGE" value="metodo patch actualizacion" />
+    <MESSAGE value="metodo para actualizar estatus de los transportistas" />
+    <option name="LAST_COMMIT_MESSAGE" value="metodo para actualizar estatus de los transportistas" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2356" y="0" key="CommitChangelistDialog2" timestamp="1602866553176">
+    <state x="2356" y="0" key="CommitChangelistDialog2" timestamp="1603728853920">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="-1056" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@-1366.0.1366.728" timestamp="1599069868921" />
     <state x="2356" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602866553176" />
-    <state x="2571" y="170" key="FileChooserDialogImpl" timestamp="1601494712485">
+    <state x="2356" y="0" key="CommitChangelistDialog2/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@1920.0.1920.1040" timestamp="1603728853920" />
+    <state x="2571" y="170" key="FileChooserDialogImpl" timestamp="1603808315236">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="-903" y="119" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@-1366.0.1366.728" timestamp="1599152068980" />
-    <state x="2571" y="170" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@1920.0.1920.1040" timestamp="1601494712485" />
-    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1602866558264">
+    <state x="2571" y="170" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@1920.0.1920.1040" timestamp="1603808315236" />
+    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1603728860972">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1366.0.1366.728/1920.0.1920.1040@1920.0.1920.1040" timestamp="1602866558264" />
+    <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1920.1040/-1366.0.1366.728@1920.0.1920.1040" timestamp="1603728860972" />
     <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1602688896303">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

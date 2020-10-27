@@ -4,10 +4,9 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import PendientesEnviar, RelacionConceptoxProyecto, Ext_PendienteEnviar_Costo, Ext_PendienteEnviar_Precio
+from .models import PendientesEnviar, RelacionConceptoxProyecto, Ext_PendienteEnviar_Costo, Ext_PendienteEnviar_Precio, Transportistas, CartaNoAdeudoTransportistas, LogStatusTransportista
 from .serializers import PendientesEnviarSerializer
 from django.db import transaction
-from ImportarExcel.models import Transportistas, CartaNoAdeudoTransportistas, LogStatusTransportista
 import json
 
 class PendientesEnviarList(APIView):
@@ -259,11 +258,10 @@ def PendienteEnviarToList(PendienteMain):
 
 class ChangeStatusProveedor(APIView):
     def post(salfe, request):
-        data = JSONParser().parse(request)
+        data = request.data
         DataTransportistas = Transportistas.objects.get(IDTransportista=data['IDTransportista'])
         CurrentMonth = datetime.datetime.now().month
         LastDayOfMonth = calendar.monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
-
         ItHasCarta = CartaNoAdeudoTransportistas.objects.filter(IDTransportista=DataTransportistas.IDTransportista,
                                                                 MesCartaNoAdeudo=(
                                                                     salfe.MesCartaConAdeudo(CurrentMonth, 2)),
